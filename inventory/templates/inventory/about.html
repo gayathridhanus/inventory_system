@@ -1,0 +1,152 @@
+<div id="page-transition" class="fade-in">
+{% extends 'inventory/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="about-section">
+    <!-- Left: Text -->
+    <div class="about-container">
+        <h1>About Our Inventory System</h1>
+        <p>
+            Welcome to our Inventory Management System — a simple and efficient way 
+            to manage products, sales, and purchases. This system is designed to 
+            help businesses keep track of stock levels, generate invoices, and 
+            maintain records with ease.
+        </p>
+        
+        <h2>Features</h2>
+        <ul>
+            <li><i class="fas fa-box"></i> Manage products with categories and details</li>
+            <li><i class="fas fa-cart-shopping"></i> Record and track sales</li>
+            <li><i class="fas fa-receipt"></i> Generate invoices instantly</li>
+            <li><i class="fas fa-truck"></i> Maintain purchase history</li>
+            <li><i class="fas fa-chart-line"></i> View reports and insights</li>
+        </ul>
+
+        <h2>Why Choose This System?</h2>
+        <p>
+            This system reduces manual work, avoids errors, and makes stock 
+            management easier. It is user-friendly and can be used by both 
+            small and medium-scale businesses.
+        </p>
+    </div>
+
+    <!-- Right: Image -->
+    <div class="right">
+        <img src="{% static 'assets/about.png' %}" alt="System Logo">
+    </div>
+</div>
+</div>
+<style>
+
+body {
+    background-color: #000000; /* black background */
+}
+
+/* About Section */
+.about-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 40px;
+    margin: 60px auto;
+    max-width: 1200px;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 768px) {
+    .about-section {
+        display:block;
+        justify-content: space-between;
+        align-items: center;
+        {% comment %} gap: 40px; {% endcomment %}
+        margin: 30px auto;
+        max-width: 1200px;
+        padding: 15px;
+        border-radius: 16px;
+        box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.3);
+   }
+    .about-container {
+        padding: 20px;
+        background: #fff;
+        color: #000;
+        font-size:15px;
+        border-radius: 12px;
+        box-shadow: 0px 6px 16px rgba(0,0,0,0.2);
+        transition: transform 0.3s ease;
+    }
+}
+
+/* Left Text Box */
+.about-container {
+    flex: 1;
+    padding: 30px;
+    background: #fff;
+    color: #000;
+    border-radius: 12px;
+    box-shadow: 0px 6px 16px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease;
+}
+
+.about-container:hover {
+    transform: translateY(-5px);
+}
+
+.about-container h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    background:black;
+    color: #fff;
+    padding:10px;
+    border-radius:10px;
+}
+
+.about-container h2 {
+    margin-top: 20px;
+    color: #333;
+    font-size: 18px;
+}
+
+.about-container ul {
+    list-style: none;
+    padding: 0;
+}
+
+.about-container ul li {
+    margin: 10px 0;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+}
+
+.about-container ul li i {
+    margin-right: 8px;
+    color: #007bff;
+}
+
+/* Right Image */
+.right {
+    flex: 0 0 350px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.right img {
+    height: 500px;
+    width: 450px;
+    object-fit: contain;
+    border-radius: 16px;
+    box-shadow: 0px 6px 18px rgba(0,0,0,0.3);
+    transition: transform 0.3s ease;
+}
+
+.right img:hover {
+    transform: scale(1.05);
+}
+</style>
+{% endblock %}
+</div>

@@ -1,0 +1,113 @@
+<div id="page-transition" class="fade-in">
+{% extends 'inventory/base.html' %} {% load static %} {% block content %}
+<div class="dashboard-layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <h2 class="sidebar-title">Inventory</h2>
+    <ul class="sidebar-links">
+      <li>
+        <a
+          href="{% url 'product_list' %}"
+          class="{% if request.path == '/products/' %}active{% endif %}"
+        >
+          <i class="fas fa-box"></i> <span class="link-text">Products</span>
+        </a>
+      </li>
+      <li>
+        <a
+          href="{% url 'sales_list' %}"
+          class="{% if request.path == '/sales/' %}active{% endif %}"
+        >
+          <i class="fas fa-cart-shopping"></i>
+          <span class="link-text">Sales</span>
+        </a>
+      </li>
+      <li>
+        <a
+          href="{% url 'purchases_list' %}"
+          class="{% if request.path == '/purchases/' %}active{% endif %}"
+        >
+          <i class="fas fa-hand-holding-dollar"></i>
+          <span class="link-text">Purchase</span>
+        </a>
+      </li>
+      <li>
+        <a
+          href="{% url 'reports' %}"
+          class="{% if request.path == '/reports/' %}active{% endif %}"
+        >
+          <i class="fas fa-chart-line"></i>
+          <span class="link-text">Reports</span>
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'logout' %}" class="logout">
+          <i class="fas fa-sign-out-alt"></i>
+          <span class="link-text">Logout</span>
+        </a>
+      </li>
+    </ul>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="product-header">
+      <h2>Products</h2>
+      <a href="{% url 'product_add' %}" class="btn-add"
+        ><i class="fa-solid fa-plus"></i> Add Product</a
+      >
+    </div>
+
+    <!-- Search Form -->
+    <form method="GET" class="search-form">
+      <input
+        type="text"
+        name="q"
+        placeholder="Search by name, category, or supplier"
+        value="{{ request.GET.q }}"
+      />
+      <button type="submit"><i class="fas fa-search"></i> Search</button>
+    </form>
+
+    <!-- Product Table -->
+    <table class="product-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Category</th>
+          <th>Quantity</th>
+          <th>Price</th>
+          <th>Supplier</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for product in products %}
+        <tr>
+          <td>{{ product.name }}</td>
+          <td>{{ product.category }}</td>
+          <td>{{ product.quantity }}</td>
+          <td>{{ product.price }}</td>
+          <td>{{ product.supplier }}</td>
+          <td>
+            <a href="{% url 'product_edit' product.pk %}" class="btn-edit"
+              ><i class="fas fa-edit"></i> Edit</a
+            >
+            <a href="{% url 'product_delete' product.pk %}" class="btn-delete"
+              ><i class="fas fa-trash"></i> Delete</a
+            >
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="6">No products available.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </main>
+</div>
+
+<link rel="stylesheet" href="{% static 'assets/dashboard.css' %}" />
+{% endblock %}
+</div>

@@ -1,0 +1,145 @@
+{% extends 'inventory/base.html' %}
+{% load static %}
+{% block content %}
+<div class="dashboard-layout">
+    
+    <!-- Sidebar -->
+    <aside class="sidebar">
+    <h2 class="sidebar-title">Inventory</h2>
+    <ul class="sidebar-links">
+        <li>
+            <a href="{% url 'product_list' %}" class="{% if request.path == '/products/' %}active{% endif %}">
+                <i class="fas fa-box"></i> <span class="link-text">Products</span>
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'sales_list' %}" class="{% if request.path == '/sales/' %}active{% endif %}">
+                <i class="fas fa-cart-shopping"></i> <span class="link-text">Sales</span>
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'purchases_list' %}" class="{% if request.path == '/purchases/' %}active{% endif %}">
+                <i class="fas fa-hand-holding-dollar"></i> <span class="link-text">Purchase</span>
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'reports' %}" class="{% if request.path == '/reports/' %}active{% endif %}">
+                <i class="fas fa-chart-line"></i> <span class="link-text">Reports</span>
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'logout' %}" class="logout">
+                <i class="fas fa-sign-out-alt"></i> <span class="link-text">Logout</span>
+            </a>
+        </li>
+    </ul>
+</aside>
+
+    <!-- Main Content -->
+    <main class="main-content"> 
+        <h2>Reports</h2>
+
+        <p>Total Products: {{ total_products }}</p>
+        <p>Total Sales: {{ total_sales }}</p>
+        <p>Total Purchases: {{ total_purchases }}</p>
+        <p>Total Revenue: ₹{{ total_revenue }}</p>
+        <p>Total Expenses: ₹{{ total_expenses }}</p>
+        <p><strong>Profit: ₹{{ total_profit }}</strong></p>
+
+        <h3>Top Selling Products</h3>
+        <ul>
+          {% for product in top_selling %}
+            <li>{{ product.product__name }} - {{ product.total_sold }} sold</li>
+          {% empty %}
+            <li>No sales yet</li>
+          {% endfor %}
+        </ul>
+
+        <h3>Low Stock Alerts</h3>
+        <ul>
+          {% for product in low_stock_products %}
+            <li>{{ product.name }} ({{ product.quantity }} left)</li>
+          {% empty %}
+            <li>No low stock products</li>
+          {% endfor %}
+        </ul>
+
+        <h3>Recent Sales</h3>
+        <ul>
+          {% for sale in recent_sales %}
+            <li>{{ sale.product.name }} - {{ sale.quantity }} pcs on {{ sale.date }}</li>
+          {% endfor %}
+        </ul>
+
+        <h3>Recent Purchases</h3>
+        <ul>
+          {% for purchase in recent_purchases %}
+            <li>{{ purchase.product.name }} - {{ purchase.quantity }} pcs on {{ purchase.date }}</li>
+          {% endfor %}
+        </ul>
+    </main>
+
+</div>
+
+<style>
+  /* Main Content */
+.main-content {
+  flex: 1;
+  padding: 30px;
+  background: #fff;
+  border-radius: 12px;
+  margin: 20px;
+  box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+  overflow-y: auto;
+}
+
+.main-content h2 {
+  font-size: 26px;
+  color: #fff;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #468a9a;
+  padding-bottom: 8px;
+}
+
+.main-content h3 {
+  font-size: 20px;
+  margin-top: 25px;
+  margin-bottom: 12px;
+  color: #00d0ffff;
+}
+
+.main-content p {
+  font-size: 16px;
+  margin: 8px 0;
+  color: #fff;
+}
+
+.main-content strong {
+  color: #01fb0eff;
+}
+
+.main-content ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.main-content ul li {
+  padding: 8px 12px;
+  margin-bottom: 6px;
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0px 2px 6px rgba(0,0,0,0.05);
+  color: #000;
+  transition: 0.3s;
+}
+
+.main-content ul li:hover {
+  background: #eaf6f9;
+  color:#000;
+  transform: translateX(5px);
+}
+</style>
+
+<link rel="stylesheet" href="{% static 'assets/dashboard.css' %}">
+{% endblock %}

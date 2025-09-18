@@ -1,0 +1,153 @@
+<div id="page-transition" class="fade-in">
+{% extends 'inventory/base.html' %} {% load static %} {% block content %}
+<div class="dashboard-layout">
+  <!-- Sidebar -->
+    <aside class="sidebar">
+    <h2 class="sidebar-title">Inventory</h2>
+    <ul class="sidebar-links">
+        <li>
+            <a href="{% url 'product_list' %}" class="{% if request.path == '/products/' %}active{% endif %}">
+                <i class="fas fa-box"></i> <span class="link-text">Products</span>
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'sales_list' %}" class="{% if request.path == '/sales/' %}active{% endif %}">
+                <i class="fas fa-cart-shopping"></i> <span class="link-text">Sales</span>
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'purchases_list' %}" class="{% if request.path == '/purchases/' %}active{% endif %}">
+                <i class="fas fa-hand-holding-dollar"></i> <span class="link-text">Purchase</span>
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'reports' %}" class="{% if request.path == '/reports/' %}active{% endif %}">
+                <i class="fas fa-chart-line"></i> <span class="link-text">Reports</span>
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'logout' %}" class="logout">
+                <i class="fas fa-sign-out-alt"></i> <span class="link-text">Logout</span>
+            </a>
+        </li>
+    </ul>
+</aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <h1>Sales</h1>
+
+    <!-- Section 1: Create Bill -->
+    <h2>Create Bill</h2>
+    <form
+      method="POST"
+      id="bill-form"
+      action="{% url 'invoice' %}"
+      target="_blank"
+    >
+      {% csrf_token %}
+      <table id="bill-table">
+        <tr>
+          <th>Product</th>
+          <th>Quantity</th>
+          <th>Total</th>
+        </tr>
+        <tr class="item-row">
+          <td>
+            <select name="product">
+              {% for product in products %}
+              <option value="{{ product.id }}" data-price="{{ product.price }}">
+                {{ product.name }}
+              </option>
+              {% endfor %}
+            </select>
+          </td>
+          <td><input type="number" name="quantity" value="1" min="1" /></td>
+          <td class="line-total">0.00</td>
+        </tr>
+      </table>
+      <button type="button" onclick="addRow()">Add Product</button>
+      <h3>Total: ₹ <span id="grand-total">0.00</span></h3>
+      <button type="submit" formaction="{% url 'invoice' %}">
+        Generate Invoice
+      </button>
+    </form>
+
+    <hr />
+
+    <!-- Section 2: Sales History -->
+    <h2>Sales History</h2>
+    <table border="1" cellpadding="5">
+      <tr>
+        <th>ID</th>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Date</th>
+        <th>Sold By</th>
+      </tr>
+      {% if sales %} {% for sale in sales %}
+      <tr>
+        <td>{{ sale.id }}</td>
+        <td>{{ sale.product.name }}</td>
+        <td>{{ sale.quantity }}</td>
+        <td>{{ sale.date }}</td>
+        <td>{{ sale.user.username }}</td>
+      </tr>
+      {% endfor %} {% else %}
+      <tr>
+        <td colspan="5">No sales available.</td>
+      </tr>
+      {% endif %}
+    </table>
+
+    <script>
+      function updateTotals() {
+        let total = 0;
+        document.querySelectorAll(".item-row").forEach((row) => {
+          let price = parseFloat(
+            row.querySelector("select").selectedOptions[0].dataset.price
+          );
+          let qty = parseInt(row.querySelector('input[name="quantity"]').value);
+          let lineTotal = price * qty;
+          row.querySelector(".line-total").innerText = lineTotal.toFixed(2);
+          total += lineTotal;
+        });
+        document.getElementById("grand-total").innerText = total.toFixed(2);
+      }
+
+      document
+        .querySelectorAll('select, input[name="quantity"]')
+        .forEach((el) => {
+          el.addEventListener("change", updateTotals);
+        });
+
+      function addRow() {
+        let table = document.getElementById("bill-table");
+        let newRow = table.rows[1].cloneNode(true);
+        table.appendChild(newRow);
+        newRow.querySelector('input[name="quantity"]').value = 1;
+        updateTotals();
+        newRow
+          .querySelectorAll('select, input[name="quantity"]')
+          .forEach((el) => {
+            el.addEventListener("change", updateTotals);
+          });
+      }
+
+      updateTotals();
+    </script>
+  </main>
+</div>
+<script>
+  setTimeout(function () {
+    let messages = document.getElementById("messages");
+    if (messages) {
+      messages.style.transition = "opacity 0.8s ease";
+      messages.style.opacity = "0";
+      setTimeout(() => messages.remove(), 800);
+    }
+  }, 10000); // 10 seconds
+</script>
+
+<link rel="stylesheet" href="{% static 'assets/dashboard.css' %}" />
+{% endblock %}

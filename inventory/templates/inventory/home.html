@@ -1,0 +1,75 @@
+<style>
+  .home-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .home-header h1 {
+    font-size: 2.2rem;
+    color: #008cf8ff;
+    margin-bottom: 10px;
+  }
+
+  .home-header p {
+    font-size: 1rem;
+    color: #fff;
+  }
+
+  .features {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .feature-card {
+    background: white;
+    padding: 20px;
+    width: 280px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.2s ease-in-out;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-5px);
+    cursor:pointer;
+  }
+
+  .feature-card h3 {
+    color: #2a5d84;
+    margin-bottom: 10px;
+  }
+
+  .feature-card p {
+    font-size: 0.9rem;
+    color: #555;
+  }
+</style>
+<div id="page-transition" class="fade-in">
+{% extends 'inventory/base.html' %} {% block content %}
+<!-- Main Content -->
+<div class="container mt-4">
+  <div class="home-header">
+    <h1>Welcome to Inventory & Billing System</h1>
+    <p>Manage stock, billing, and reports all in one place.</p>
+  </div>
+
+  <div class="features">
+    <div class="feature-card">
+      <h3>📦 Inventory Tracking</h3>
+      <p>Monitor stock levels and get alerts when products run low.</p>
+    </div>
+    <div class="feature-card">
+      <h3>🧾 Quick Billing</h3>
+      <p>Generate and print invoices instantly for your customers.</p>
+    </div>
+    <div class="feature-card">
+      <h3>📊 Sales Reports</h3>
+      <p>View daily, weekly, and monthly performance reports.</p>
+    </div>
+  </div>
+</div>
+{% endblock %}
+</div>

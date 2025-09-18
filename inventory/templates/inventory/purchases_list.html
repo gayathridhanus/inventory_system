@@ -1,0 +1,89 @@
+{% extends 'inventory/base.html' %} {% load static %} {% block content %}
+<div class="dashboard-layout">
+  <!-- Sidebar -->
+    <aside class="sidebar">
+    <h2 class="sidebar-title">Inventory</h2>
+    <ul class="sidebar-links">
+        <li>
+            <a href="{% url 'product_list' %}" class="{% if request.path == '/products/' %}active{% endif %}">
+                <i class="fas fa-box"></i> <span class="link-text">Products</span>
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'sales_list' %}" class="{% if request.path == '/sales/' %}active{% endif %}">
+                <i class="fas fa-cart-shopping"></i> <span class="link-text">Sales</span>
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'purchases_list' %}" class="{% if request.path == '/purchases/' %}active{% endif %}">
+                <i class="fas fa-hand-holding-dollar"></i> <span class="link-text">Purchase</span>
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'reports' %}" class="{% if request.path == '/reports/' %}active{% endif %}">
+                <i class="fas fa-chart-line"></i> <span class="link-text">Reports</span>
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'logout' %}" class="logout">
+                <i class="fas fa-sign-out-alt"></i> <span class="link-text">Logout</span>
+            </a>
+        </li>
+    </ul>
+</aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <h2>Purchases</h2>
+
+
+    <!-- Purchase Form -->
+    <h3>Add New Purchase</h3>
+    <form method="POST" id="purchase-form" class="form-card">
+      {% csrf_token %} {{ form.as_p }}
+      <button type="submit" class="btn-primary">Add Purchase</button>
+    </form>
+
+    <!-- Purchases Table -->
+    <table border="1" cellpadding="8" cellspacing="0" style="margin-top: 20px">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Product</th>
+          <th>Quantity</th>
+          <th>Date</th>
+          <th>Purchased By</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for purchase in purchases %}
+        <tr>
+          <td>{{ purchase.id }}</td>
+          <td>{{ purchase.product.name }}</td>
+          <td>{{ purchase.quantity }}</td>
+          <td>{{ purchase.date }}</td>
+          <td>{{ purchase.purchased_by.username }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="5">No purchases available.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </main>
+</div>
+<script>
+  // Auto-hide messages after 8 seconds
+  setTimeout(function () {
+    let messages = document.getElementById("messages");
+    if (messages) {
+      messages.style.transition = "opacity 0.8s ease";
+      messages.style.opacity = "0";
+      setTimeout(() => messages.remove(), 800); // remove after fade out
+    }
+  }, 8000); // 10 seconds
+</script>
+
+<link rel="stylesheet" href="{% static 'assets/dashboard.css' %}" />
+{% endblock %}

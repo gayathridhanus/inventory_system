@@ -1,0 +1,89 @@
+{% extends 'inventory/base.html' %} {% load static %} {% block content %}
+
+<div class="dashboard-layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <h2 class="sidebar-title">Inventory</h2>
+    <ul class="sidebar-links">
+      <li>
+        <a
+          href="{% url 'product_list' %}"
+          class="{% if request.path == '/products/' %}active{% endif %}"
+        >
+          <i class="fas fa-box"></i> <span class="link-text">Products</span>
+        </a>
+      </li>
+      <li>
+        <a
+          href="{% url 'sales_list' %}"
+          class="{% if request.path == '/sales/' %}active{% endif %}"
+        >
+          <i class="fas fa-cart-shopping"></i>
+          <span class="link-text">Sales</span>
+        </a>
+      </li>
+      <li>
+        <a
+          href="{% url 'purchases_list' %}"
+          class="{% if request.path == '/purchases/' %}active{% endif %}"
+        >
+          <i class="fas fa-hand-holding-dollar"></i>
+          <span class="link-text">Purchase</span>
+        </a>
+      </li>
+      <li>
+        <a
+          href="{% url 'reports' %}"
+          class="{% if request.path == '/reports/' %}active{% endif %}"
+        >
+          <i class="fas fa-chart-line"></i>
+          <span class="link-text">Reports</span>
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'logout' %}" class="logout">
+          <i class="fas fa-sign-out-alt"></i>
+          <span class="link-text">Logout</span>
+        </a>
+      </li>
+    </ul>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="greetings">
+      <h2>Welcome, {{ request.user.username }}!</h2>
+      <p>Role: {{ request.user.role }}</p>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="stats-container">
+      <div class="stat-card">
+        <h3>Total Products</h3>
+        <p>{{ total_products }}</p>
+      </div>
+      <div class="stat-card">
+        <h3>Low Stock Items</h3>
+        <p>{{ low_stock_count }}</p>
+      </div>
+      <div class="stat-card">
+        <h3>Sales Today</h3>
+        <p>{{ sales_today }}</p>
+      </div>
+      <div class="stat-card">
+        <h3>Recent Activities</h3>
+        <ul>
+          {% for activity in recent_activities %}
+          <li>{{ activity }}</li>
+          {% empty %}
+          <li>No recent activities</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </main>
+</div>
+
+<link rel="stylesheet" href="{% static 'assets/dashboard.css' %}" />
+
+{% endblock %}
